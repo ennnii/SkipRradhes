@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/queue")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins}")
+@CrossOrigin(origins = "*")
 public class QueueController {
 
     private final QueueService queueService;
