@@ -12,8 +12,10 @@ function LoginPage() {
       const res = await login(form);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username);
+      localStorage.setItem('businessId', res.data.businessId);
       navigate('/business');
-    } catch {
+    } catch (err) {
+      console.log('ERROR:', err.response?.data, err.response?.status);
       setError('Kredencialet janë të gabuara!');
     }
   };
@@ -36,11 +38,9 @@ function LoginPage() {
             color:'#64748B', marginBottom:'4px', textTransform:'uppercase' }}>
             Përdoruesi
           </label>
-          <input
-            type="text"
-            value={form.username}
+          <input type="text" value={form.username}
             onChange={e => setForm({...form, username: e.target.value})}
-            placeholder="admin.qender"
+            placeholder="admin.bank1"
             style={{ width:'100%', padding:'9px 12px', border:'1px solid #e2e8f0',
               borderRadius:'8px', fontSize:'14px', boxSizing:'border-box' }}
           />
@@ -51,9 +51,7 @@ function LoginPage() {
             color:'#64748B', marginBottom:'4px', textTransform:'uppercase' }}>
             Fjalëkalimi
           </label>
-          <input
-            type="password"
-            value={form.password}
+          <input type="password" value={form.password}
             onChange={e => setForm({...form, password: e.target.value})}
             placeholder="••••••••"
             style={{ width:'100%', padding:'9px 12px', border:'1px solid #e2e8f0',
@@ -61,8 +59,7 @@ function LoginPage() {
           />
         </div>
 
-        <button
-          onClick={handleSubmit}
+        <button onClick={handleSubmit}
           style={{ width:'100%', padding:'12px', background:'#2563EB',
             color:'#fff', border:'none', borderRadius:'8px',
             fontSize:'14px', fontWeight:'600', cursor:'pointer' }}>
@@ -71,7 +68,7 @@ function LoginPage() {
 
         <div style={{ marginTop:'16px', fontSize:'12px',
           color:'#64748B', textAlign:'center' }}>
-          Demo: <strong>admin.qender</strong> / <strong>admin123</strong>
+          Demo: <strong>admin.bank1</strong> / <strong>admin123</strong>
         </div>
       </div>
     </div>
