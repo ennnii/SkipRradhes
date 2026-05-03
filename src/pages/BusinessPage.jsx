@@ -6,13 +6,16 @@ function BusinessPage() {
   const [error, setError] = useState('');
   const [msg, setMsg] = useState('');
   const token = localStorage.getItem('token');
+  const bizId = localStorage.getItem('businessId');
 
   const fetchQueue = async () => {
     try {
-      const res = await getLiveQueue(1);
-      setQueue(res.data);
+      const res = await getLiveQueue(bizId);
+      const data = Array.isArray(res.data) ? res.data : [];
+      setQueue(data);
     } catch {
-      setError('Nuk u lidh me serverin ose nuk jeni të autentifikuar.');
+      setError('Nuk u lidh me serverin.');
+      setQueue([]);
     }
   };
 
@@ -58,7 +61,6 @@ function BusinessPage() {
   return (
     <div style={{ maxWidth:'900px', margin:'0 auto', padding:'20px 16px' }}>
 
-      {/* Header */}
       <div style={{ background:'#0F172A', color:'#fff', borderRadius:'12px',
         padding:'20px 24px', marginBottom:'20px',
         display:'flex', justifyContent:'space-between', alignItems:'center' }}>
@@ -74,7 +76,6 @@ function BusinessPage() {
         </span>
       </div>
 
-      {/* Stats */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)',
         gap:'12px', marginBottom:'20px' }}>
         {[
@@ -84,17 +85,12 @@ function BusinessPage() {
         ].map(s => (
           <div key={s.label} style={{ background:'#fff', borderRadius:'10px',
             border:'1px solid #e2e8f0', padding:'16px', textAlign:'center' }}>
-            <div style={{ fontSize:'28px', fontWeight:'800', color:s.color }}>
-              {s.val}
-            </div>
-            <div style={{ fontSize:'12px', color:'#64748B', marginTop:'2px' }}>
-              {s.label}
-            </div>
+            <div style={{ fontSize:'28px', fontWeight:'800', color:s.color }}>{s.val}</div>
+            <div style={{ fontSize:'12px', color:'#64748B', marginTop:'2px' }}>{s.label}</div>
           </div>
         ))}
       </div>
 
-      {/* Mesazhe */}
       {msg && (
         <div style={{ background:'#F0FDF4', border:'1px solid #BBF7D0',
           color:'#14532D', padding:'10px 14px', borderRadius:'8px',
@@ -106,7 +102,6 @@ function BusinessPage() {
           marginBottom:'12px', fontSize:'13px' }}>{error}</div>
       )}
 
-      {/* Tabela */}
       <div style={{ background:'#fff', borderRadius:'12px',
         border:'1px solid #e2e8f0', overflow:'hidden' }}>
         <table style={{ width:'100%', borderCollapse:'collapse' }}>
@@ -131,22 +126,18 @@ function BusinessPage() {
               </tr>
             ) : queue.map(t => (
               <tr key={t.id} style={{ borderBottom:'1px solid #F1F5F9' }}>
-                <td style={{ padding:'10px 14px', fontWeight:'700',
-                  fontSize:'13px' }}>{t.ticketCode}</td>
+                <td style={{ padding:'10px 14px', fontWeight:'700', fontSize:'13px' }}>
+                  {t.ticketCode}
+                </td>
                 <td style={{ padding:'10px 14px', fontSize:'13px',
                   textDecoration: t.blocked ? 'line-through':'' }}>
                   {t.clientName}
                 </td>
-                <td style={{ padding:'10px 14px', fontSize:'13px' }}>
-                  {t.serviceDetail}
-                </td>
-                <td style={{ padding:'10px 14px', fontSize:'13px' }}>
-                  {t.estimatedWaitMinutes} min
-                </td>
+                <td style={{ padding:'10px 14px', fontSize:'13px' }}>{t.serviceDetail}</td>
+                <td style={{ padding:'10px 14px', fontSize:'13px' }}>{t.estimatedWaitMinutes} min</td>
                 <td style={{ padding:'10px 14px' }}>
                   <span style={{
-                    padding:'3px 10px', borderRadius:'20px', fontSize:'12px',
-                    fontWeight:'600',
+                    padding:'3px 10px', borderRadius:'20px', fontSize:'12px', fontWeight:'600',
                     background: t.blocked ? '#FEF2F2' :
                       t.status==='ACTIVE'  ? '#F0FDF4' :
                       t.status==='DELAYED' ? '#FFFBEB' : '#EFF6FF',
