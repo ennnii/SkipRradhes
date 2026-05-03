@@ -1,5 +1,6 @@
 package com.SkipRradhes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.SkipRradhes.enums.ServiceType;
 import com.SkipRradhes.enums.TicketStatus;
 import jakarta.persistence.*;
@@ -46,6 +47,7 @@ public class QueueTicket {
     private LocalDateTime calledAt;
     private LocalDateTime completedAt;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_id")
     private Business business;

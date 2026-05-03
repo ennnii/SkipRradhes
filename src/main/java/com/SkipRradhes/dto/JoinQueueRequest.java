@@ -10,4 +10,5 @@ public class JoinQueueRequest {
     @NotBlank private String serviceType;
     @NotBlank private String serviceDetail;
     @NotBlank private String branchName;
+    private String preferredHour;
 }

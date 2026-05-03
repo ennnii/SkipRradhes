@@ -1,5 +1,6 @@
 package com.SkipRradhes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -25,6 +26,7 @@ public class Business {
     private int avgClinicMinutes;
     private int avgAdminMinutes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL)
     private List<QueueTicket> tickets;
 }

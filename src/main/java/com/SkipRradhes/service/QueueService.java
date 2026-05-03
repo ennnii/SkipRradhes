@@ -50,7 +50,8 @@ public class QueueService {
             case ADMIN  -> "C";
         };
 
-        String ticketCode = prefix + "-" + String.format("%03d", position + 40);
+        long totalTickets = ticketRepo.count();
+        String ticketCode = prefix + "-" + String.format("%03d", totalTickets + 1);
         String qrCode = UUID.randomUUID().toString();
 
         QueueTicket ticket = QueueTicket.builder()
